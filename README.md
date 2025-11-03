@@ -7,7 +7,7 @@
   </picture>
 </p>
 
-[![License](https://img.shields.io/github/license/TaraRostami/TXray?style=for-the-badge&color=%23c8159d&longCache=true)](https://github.com/TaraRostami/TXray/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/jameszeroX/TXray?style=for-the-badge&color=%23c8159d&longCache=true)](https://github.com/jameszeroX/TXray/blob/main/LICENSE)
 
 **A lightweight script to easily install and manage the Xray Core**
 
@@ -16,7 +16,7 @@
 ## Run
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/tararostami/txray/master/txray.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/jameszeroX/txray/master/txray.sh)
 ```
 
 > **Tip:** After installation, you can edit the config.json file in /etc/xray/config.json path.

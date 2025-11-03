@@ -249,7 +249,7 @@ install_xray() {
 
     if [[ -e /usr/local/xray/ ]]; then
         systemctl stop xray
-        rm -rf /usr/local/xray/
+        rm -f /usr/local/xray/xray-linux
     fi
 
     # Check if the directory doesn't exist
@@ -270,23 +270,21 @@ install_xray() {
     extracting "$ZIP_FILE"
 
     install -m 755 "$TMP_DIRECTORY/xray" $XRAY_DIR/xray-linux
-    install -m 644 "$TMP_DIRECTORY/geoip.dat" $XRAY_DIR
-    install -m 644 "$TMP_DIRECTORY/geosite.dat" $XRAY_DIR
 
     rm -rf "$TMP_DIRECTORY"
     LOGN "removed: $TMP_DIRECTORY"
 
-    wget -O /usr/local/xray/geoip_IR.dat https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/release/geoip.dat
+    wget -O /usr/local/xray/zkeenip.dat https://github.com/jameszeroX/zkeen-ip/releases/latest/download/zkeenip.dat
     geoip_status=$?
-    wget -O /usr/local/xray/geosite_IR.dat https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/release/geosite.dat
+    wget -O /usr/local/xray/zkeen.dat https://github.com/jameszeroX/zkeen-domains/releases/latest/download/zkeen.dat
     geosite_status=$?
 
     # Check if either download failed
     if [[ $geoip_status -ne 0 || $geosite_status -ne 0 ]]; then
-        LOGW "File geoip.dat and/or geosite.dat failed to download properly. Download them again via the script menu, option 14."
+        LOGW "File zkeenip.dat and/or zkeen.dat failed to download properly. Download them again via the script menu, option 14."
     fi
 
-    wget --no-check-certificate -O /usr/bin/txray https://raw.githubusercontent.com/tararostami/txray/main/txray.sh
+    wget --no-check-certificate -O /usr/bin/txray https://raw.githubusercontent.com/jameszeroX/txray/main/txray.sh
     chmod +x /usr/bin/txray
 
     if [[ ! -f /etc/xray/config.json ]]; then
@@ -418,7 +416,7 @@ update_menu() {
         return 0
     fi
 
-    wget --no-check-certificate -O /usr/bin/txray https://raw.githubusercontent.com/TaraRostami/txray/main/txray.sh
+    wget --no-check-certificate -O /usr/bin/txray https://raw.githubusercontent.com/jameszeroX/txray/main/txray.sh
     chmod +x /usr/bin/txray
 
     if [[ $? == 0 ]]; then
@@ -490,7 +488,7 @@ uninstall() {
 
     echo -e "\nUninstalled Successfully.\n"
     echo "If you need to install again, you can use below command:"
-    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/tararostami/txray/master/txray.sh)${plain}\n"
+    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/jameszeroX/txray/master/txray.sh)${plain}\n"
 
     # Trap the SIGTERM signal
     trap delete_script SIGTERM
@@ -789,9 +787,7 @@ show_enable_status() {
 }
 
 update_geo() {
-    echo -e "${green}\t1.${plain} Loyalsoldier (geoip.dat, geosite.dat)"
-    echo -e "${green}\t2.${plain} chocolate4u (geoip_IR.dat, geosite_IR.dat)"
-    echo -e "${green}\t3.${plain} vuong2023 (geoip_VN.dat, geosite_VN.dat)"
+    echo -e "${green}\t1.${plain} jameszeroX (zkeenip.dat, zkeen.dat)"
     echo -e "${green}\t0.${plain} Back to Main Menu"
     read -p "Choose an option: " choice
 
@@ -803,26 +799,10 @@ update_geo() {
         ;;
     1)
         systemctl stop xray
-        rm -f geoip.dat geosite.dat
-        wget -N https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
-        wget -N https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
-        echo -e "${green}Loyalsoldier datasets have been updated successfully!${plain}"
-        restart
-        ;;
-    2)
-        systemctl stop xray
-        rm -f geoip_IR.dat geosite_IR.dat
-        wget -O geoip_IR.dat -N https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/release/geoip.dat
-        wget -O geosite_IR.dat -N https://raw.githubusercontent.com/Chocolate4U/Iran-v2ray-rules/release/geosite.dat
-        echo -e "${green}chocolate4u datasets have been updated successfully!${plain}"
-        restart
-        ;;
-    3)
-        systemctl stop xray
-        rm -f geoip_VN.dat geosite_VN.dat
-        wget -O geoip_VN.dat -N https://github.com/vuong2023/vn-v2ray-rules/releases/latest/download/geoip.dat
-        wget -O geosite_VN.dat -N https://github.com/vuong2023/vn-v2ray-rules/releases/latest/download/geosite.dat
-        echo -e "${green}vuong2023 datasets have been updated successfully!${plain}"
+        rm -f zkeenip.dat zkeen.dat
+        wget -N https://github.com/jameszeroX/zkeen-ip/releases/latest/download/zkeenip.dat
+        wget -N https://github.com/jameszeroX/zkeen-domains/releases/latest/download/zkeen.dat
+        echo -e "${green}jameszeroX datasets have been updated successfully!${plain}"
         restart
         ;;
     *)
@@ -1350,7 +1330,7 @@ show_menu() {
 ╚═══════════════════════════════╝
 "
     show_status
-    echo && read -p "Please enter your selection [0-14]: " num
+    echo && read -p "Please enter your selection [0-16]: " num
 
     case "${num}" in
     0)
