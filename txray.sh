@@ -1385,7 +1385,7 @@ show_menu() {
         check_install && cron_menu
         ;;
     *)
-        LOGE "Please enter the correct number [0-14]"
+        LOGE "Please enter the correct number [0-16]"
         ;;
     esac
 }
